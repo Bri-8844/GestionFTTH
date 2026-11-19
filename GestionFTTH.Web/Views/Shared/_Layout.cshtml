@@ -1,0 +1,158 @@
+﻿@{
+    var esAdministrador = User.Identity?.IsAuthenticated == true &&
+        (User.IsInRole("AdministradorPrincipal") ||
+         User.IsInRole("AdministradorGerencia"));
+}
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - GestiónFTTH</title>
+
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/css/dashboard.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/GestionFTTH.Web.styles.css"
+          asp-append-version="true" />
+</head>
+
+<body class="ftth-body">
+
+    @if (esAdministrador)
+    {
+        <div class="ftth-layout">
+
+            <!-- MENÚ LATERAL -->
+            <aside class="ftth-sidebar">
+
+                <div class="ftth-brand">
+                    <div class="ftth-brand-icon">FT</div>
+                    <div>
+                        <strong>GestiónFTTH</strong>
+                        <small>Gestión de proyectos</small>
+                    </div>
+                </div>
+
+                <div class="ftth-menu-label">
+                    MENÚ PRINCIPAL
+                </div>
+
+                <nav class="ftth-menu"
+                     aria-label="Menú principal">
+
+                    <a asp-area=""
+                       asp-controller="Dashboard"
+                       asp-action="Index"
+                       class="ftth-menu-item active">
+                        <span>▦</span> Dashboard
+                    </a>
+
+
+                    <a asp-controller="Proyectos"
+                       asp-action="Index"
+                       class="ftth-menu-item">
+                        <span>▤</span> Proyectos
+                    </a>
+
+
+
+                    <a asp-controller="Tareas"
+                       asp-action="Index"
+                       class="ftth-menu-item">
+                        <span>☷</span> Tareas
+                    </a>
+
+
+
+                    @if (User.IsInRole("AdministradorPrincipal") ||
+                                    User.IsInRole("AdministradorGerencia"))
+                    {
+                        <a asp-controller="Usuarios"
+                           asp-action="Index"
+                           class="ftth-menu-item">
+                            <span>♙</span> Usuarios
+                        </a>
+                    }
+
+
+                    <span class="ftth-menu-item disabled">
+                        <span>▥</span> Reportes
+                    </span>
+
+                </nav>
+
+                <div class="ftth-sidebar-bottom">
+                    <small>Sistema Gestión FTTH</small>
+                    <small>Versión 1.0</small>
+                </div>
+
+            </aside>
+
+            <!-- CONTENIDO PRINCIPAL -->
+            <div class="ftth-main">
+
+                <header class="ftth-topbar">
+
+                    <div>
+                        <strong>Panel de administración</strong>
+                        <small>Gestión y monitoreo de proyectos</small>
+                    </div>
+
+                    <div class="ftth-user">
+                        <partial name="_LoginPartial" />
+                    </div>
+
+                </header>
+
+                <main class="ftth-content">
+                    @RenderBody()
+                </main>
+
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <!-- VISTA PARA USUARIOS SIN PANEL ADMINISTRATIVO -->
+        <header class="navbar navbar-light bg-white border-bottom">
+            <div class="container-fluid">
+                <a class="navbar-brand"
+                   asp-controller="Home"
+                   asp-action="Index">
+                    GestiónFTTH
+                </a>
+
+                <partial name="_LoginPartial" />
+            </div>
+        </header>
+
+        <main class="container py-4">
+            @RenderBody()
+        </main>
+    }
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/js/site.js"
+            asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

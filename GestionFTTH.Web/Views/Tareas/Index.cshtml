@@ -1,0 +1,171 @@
+﻿@model IEnumerable<GestionFTTH.Web.Models.Tarea>
+
+
+@{
+    ViewData["Title"] = "Gestión de Tareas";
+
+    var nombresResponsables =
+        ViewBag.NombresResponsables
+        as Dictionary<string, string>
+        ?? new Dictionary<string, string>();
+}
+
+
+@if (TempData["MensajeExito"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show"
+         role="alert">
+        @TempData["MensajeExito"]
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Cerrar">
+        </button>
+    </div>
+}
+
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between
+                align-items-center flex-wrap gap-3 mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1" style="color:#12395e;">
+                Gestión de Tareas
+            </h2>
+
+            <p class="text-muted mb-0">
+                Seguimiento y control de actividades FTTH
+            </p>
+        </div>
+
+
+        <a asp-controller="Tareas"
+           asp-action="Create"
+           class="btn btn-primary">
+            + Nueva tarea
+        </a>
+
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th>Código</th>
+                            <th>Tarea</th>
+                            <th>Proyecto</th>
+                            <th>Responsable</th>
+                            <th>Prioridad</th>
+                            <th>Estado</th>
+                            <th>Avance</th>
+                            <th>Fecha límite</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var tarea in Model)
+                        {
+                            <tr>
+                                <td class="fw-semibold">
+                                    @tarea.Codigo
+                                </td>
+
+                                <td>@tarea.Titulo</td>
+
+                                <td>
+                                    @(tarea.Proyecto?.Nombre ?? "Sin proyecto")
+                                </td>
+
+
+                                <td>
+                                    @if (!string.IsNullOrEmpty(tarea.ResponsableId) &&
+                                                                    nombresResponsables.TryGetValue(
+                                                                    tarea.ResponsableId, out var nombreResponsable))
+                                    {
+                                        <span>@nombreResponsable</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Sin asignar</span>
+                                    }
+                                </td>
+
+
+                                <td>
+                                    @switch (tarea.Prioridad)
+                                    {
+                                        case GestionFTTH.Web.Models.PrioridadTarea.Alta:
+                                            <span class="badge bg-danger">Alta</span>
+                                            break;
+
+                                        case GestionFTTH.Web.Models.PrioridadTarea.Media:
+                                            <span class="badge bg-warning text-dark">Media</span>
+                                            break;
+
+                                        default:
+                                            <span class="badge bg-secondary">Baja</span>
+                                            break;
+                                    }
+                                </td>
+
+                                <td>
+                                    @switch (tarea.Estado)
+                                    {
+                                        case GestionFTTH.Web.Models.EstadoTarea.Finalizada:
+                                            <span class="badge bg-success">Finalizada</span>
+                                            break;
+
+                                        case GestionFTTH.Web.Models.EstadoTarea.EnEjecucion:
+                                            <span class="badge bg-primary">En ejecución</span>
+                                            break;
+
+                                        default:
+                                            <span class="badge bg-secondary">Pendiente</span>
+                                            break;
+                                    }
+                                </td>
+
+                                <td style="min-width:120px;">
+                                    <div class="progress" style="height:8px;">
+                                        <div class="progress-bar"
+                                             role="progressbar"
+                                             style="width:@(tarea.PorcentajeAvance)%"
+                                             aria-valuenow="@tarea.PorcentajeAvance"
+                                             aria-valuemin="0"
+                                             aria-valuemax="100">
+                                        </div>
+                                    </div>
+                                    <small>@tarea.PorcentajeAvance%</small>
+                                </td>
+
+                                <td>
+                                    @(tarea.FechaLimite?.ToString("dd/MM/yyyy") ?? "-")
+                                </td>
+                            </tr>
+                        }
+
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="8"
+                                    class="text-center text-muted py-5">
+                                    Todavía no existen tareas registradas.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,205 @@
+﻿@model GestionFTTH.Web.Models.Proyecto
+@using GestionFTTH.Web.Models
+
+@{
+    ViewData["Title"] = "Detalle del proyecto";
+
+    string nombreArea = Model.Area switch
+    {
+        AreaProyecto.Prediseño => "Prediseño",
+        AreaProyecto.Diseño => "Diseño",
+        AreaProyecto.Construccion => "Construcción",
+        _ => "No definida"
+    };
+
+    string nombreEstado = Model.Estado switch
+    {
+        EstadoProyecto.Pendiente => "Pendiente",
+        EstadoProyecto.EnEjecucion => "En ejecución",
+        EstadoProyecto.Finalizado => "Finalizado",
+        _ => "No definido"
+    };
+
+    string claseEstado = Model.Estado switch
+    {
+        EstadoProyecto.Pendiente => "bg-warning text-dark",
+        EstadoProyecto.EnEjecucion => "bg-primary text-white",
+        EstadoProyecto.Finalizado => "bg-success text-white",
+        _ => "bg-secondary text-white"
+    };
+}
+
+<style>
+    .detalle-header {
+        margin-bottom: 25px;
+    }
+
+        .detalle-header h2 {
+            color: #12395e;
+            font-weight: 700;
+        }
+
+    .detalle-card {
+        background: white;
+        border: 1px solid #e1eaf3;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 5px 20px rgba(10,49,82,0.05);
+    }
+
+    .detalle-titulo {
+        color: #12395e;
+        font-size: 18px;
+        font-weight: 700;
+        border-bottom: 1px solid #e5edf5;
+        padding-bottom: 12px;
+        margin-bottom: 22px;
+    }
+
+    .detalle-label {
+        color: #7890a8;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 6px;
+    }
+
+    .detalle-valor {
+        color: #173b5e;
+        font-size: 16px;
+        font-weight: 600;
+        overflow-wrap: anywhere;
+    }
+
+    .detalle-descripcion {
+        color: #38536d;
+        line-height: 1.7;
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+    }
+
+    .btn-volver {
+        background: #edf2f7;
+        color: #31516f;
+        border-radius: 9px;
+        padding: 11px 22px;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+        .btn-volver:hover {
+            background: #dfe8f1;
+            color: #12395e;
+        }
+</style>
+
+<div class="detalle-header">
+    <h2>Detalle del proyecto</h2>
+    <p class="text-muted">
+        Información general del proyecto FTTH registrado.
+    </p>
+</div>
+
+<div class="detalle-card">
+
+    <div class="d-flex justify-content-between
+                align-items-center flex-wrap gap-3 mb-4">
+
+        <div>
+            <h3 class="fw-bold mb-2" style="color:#12395e;">
+                @Model.Nombre
+            </h3>
+            <span class="text-muted">
+                Código: @Model.Codigo
+            </span>
+        </div>
+
+        <span class="badge rounded-pill @claseEstado px-3 py-2">
+            @nombreEstado
+        </span>
+
+    </div>
+
+    <h5 class="detalle-titulo">
+        Información general
+    </h5>
+
+    <div class="row g-4">
+
+        <div class="col-md-6">
+            <div class="detalle-label">Código del proyecto</div>
+            <div class="detalle-valor">@Model.Codigo</div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="detalle-label">Área</div>
+            <div class="detalle-valor">@nombreArea</div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="detalle-label">Estado</div>
+            <div class="detalle-valor">@nombreEstado</div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="detalle-label">Fecha de registro</div>
+            <div class="detalle-valor">
+                @Model.FechaRegistro.ToString("dd/MM/yyyy")
+            </div>
+        </div>
+
+    </div>
+
+    <h5 class="detalle-titulo mt-4">
+        Cronograma del proyecto
+    </h5>
+
+    <div class="row g-4">
+
+        <div class="col-md-6">
+            <div class="detalle-label">Fecha de inicio</div>
+            <div class="detalle-valor">
+                @(Model.FechaInicio?.ToString("dd/MM/yyyy") ?? "No definida")
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="detalle-label">Fecha de entrega</div>
+            <div class="detalle-valor">
+                @(Model.FechaEntrega?.ToString("dd/MM/yyyy") ?? "No definida")
+            </div>
+        </div>
+
+    </div>
+
+    <h5 class="detalle-titulo mt-4">
+        Descripción del proyecto
+    </h5>
+
+    <div class="detalle-descripcion">
+        @(string.IsNullOrWhiteSpace(Model.Descripcion)
+                ? "No se registró una descripción."
+                : Model.Descripcion)
+    </div>
+
+    <hr class="my-4" />
+
+    <div class="d-flex justify-content-end gap-3">
+
+        <a asp-controller="Proyectos"
+           asp-action="Index"
+           asp-route-area="@((int)Model.Area)"
+           class="btn-volver">
+            Volver al listado
+        </a>
+
+        <a asp-controller="Proyectos"
+           asp-action="Edit"
+           asp-route-id="@Model.Id"
+           class="btn btn-primary px-4">
+            Editar proyecto
+        </a>
+
+
+    </div>
+
+</div>

@@ -1,0 +1,295 @@
+﻿
+:root {
+    --ftth-navy: #092d50;
+    --ftth-blue: #0878c9;
+    --ftth-cyan: #13b7dc;
+    --ftth-green: #12b886;
+    --ftth-bg: #f3f7fb;
+}
+
+.ftth-body {
+    margin: 0;
+    background: var(--ftth-bg);
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.ftth-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* MENÚ LATERAL */
+
+.ftth-sidebar {
+    width: 255px;
+    flex-shrink: 0;
+    background: linear-gradient(180deg, #092d50, #07558a);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 25px 16px;
+}
+
+.ftth-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 5px 10px 28px;
+}
+
+.ftth-brand-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #0878c9, #12b886);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 18px;
+}
+
+.ftth-brand strong,
+.ftth-brand small {
+    display: block;
+}
+
+.ftth-brand small {
+    color: #b5d6e8;
+    font-size: 11px;
+}
+
+.ftth-menu-label {
+    color: #91b5cf;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 0 15px 12px;
+}
+
+.ftth-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.ftth-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 13px 16px;
+    border-radius: 10px;
+    color: #d7e9f5;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+    .ftth-menu-item span:first-child {
+        font-size: 20px;
+    }
+
+    .ftth-menu-item.active {
+        background: rgba(255,255,255,0.16);
+        color: white;
+        border-left: 3px solid var(--ftth-green);
+    }
+
+a.ftth-menu-item:hover {
+    background: rgba(255,255,255,0.12);
+    color: white;
+}
+
+.ftth-menu-item.disabled {
+    opacity: 0.55;
+    cursor: default;
+}
+
+.ftth-sidebar-bottom {
+    margin-top: auto;
+    padding: 20px 12px 0;
+    display: flex;
+    flex-direction: column;
+    color: #a6c7dc;
+    font-size: 12px;
+}
+
+/* PANEL PRINCIPAL */
+
+.ftth-main {
+    flex: 1;
+    min-width: 0;
+}
+
+.ftth-topbar {
+    min-height: 85px;
+    background: white;
+    border-bottom: 1px solid #e4edf5;
+    padding: 18px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+}
+
+    .ftth-topbar strong,
+    .ftth-topbar small {
+        display: block;
+    }
+
+    .ftth-topbar strong {
+        color: #12395e;
+        font-size: 17px;
+    }
+
+    .ftth-topbar small {
+        color: #8293a7;
+        font-size: 12px;
+    }
+
+.ftth-user {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.ftth-user-name {
+    color: #34536f;
+    font-size: 13px;
+}
+
+.ftth-content {
+    padding: 30px;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 768px) {
+    .ftth-layout {
+        flex-direction: column;
+    }
+
+    .ftth-sidebar {
+        width: 100%;
+    }
+
+    .ftth-topbar {
+        padding: 15px;
+        flex-wrap: wrap;
+    }
+
+    .ftth-content {
+        padding: 15px;
+    }
+
+    .ftth-user {
+        flex-wrap: wrap;
+    }
+}
+
+/* DASHBOARD - INDICADORES */
+
+.ftth-stat-card {
+    background: white;
+    border-radius: 14px;
+    padding: 25px;
+    border: 1px solid #e5edf5;
+    box-shadow: 0 4px 15px rgba(10, 45, 80, 0.04);
+    min-height: 155px;
+}
+
+    .ftth-stat-card span {
+        display: block;
+        color: #60778e;
+        font-size: 14px;
+        margin-bottom: 12px;
+    }
+
+    .ftth-stat-card h2 {
+        color: #0a4778;
+        font-size: 34px;
+        font-weight: 800;
+        margin-bottom: 8px;
+    }
+
+    .ftth-stat-card small {
+        color: #91a1b0;
+    }
+
+/* TARJETAS DE ÁREAS */
+
+.ftth-area-card {
+    background: white;
+    border-radius: 14px;
+    padding: 28px;
+    border: 1px solid #e5edf5;
+    box-shadow: 0 4px 15px rgba(10, 45, 80, 0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-height: 285px;
+}
+
+    .ftth-area-card h4 {
+        color: #12395e;
+        font-weight: 700;
+        margin-top: 16px;
+    }
+
+    .ftth-area-card p {
+        color: #6d8296;
+        font-size: 14px;
+    }
+
+    .ftth-area-card span {
+        color: #8094a7;
+        font-size: 13px;
+    }
+
+    .ftth-area-card .btn {
+        margin-top: auto !important;
+    }
+
+.ftth-area-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 22px;
+    font-weight: 800;
+}
+
+    .ftth-area-icon.prediseño {
+        background: #0ea5ce;
+    }
+
+    .ftth-area-icon.diseño {
+        background: #0878c9;
+    }
+
+    .ftth-area-icon.construccion {
+        background: #12a77a;
+    }
+
+/* AJUSTE DE LA BARRA SUPERIOR */
+
+.ftth-user .navbar-nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.ftth-user .nav-link {
+    padding: 5px 8px;
+    font-size: 13px;
+}
+
+@media (max-width: 768px) {
+    .ftth-area-card {
+        min-height: auto;
+    }
+}

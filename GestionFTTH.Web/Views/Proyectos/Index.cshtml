@@ -1,0 +1,322 @@
+﻿@model IEnumerable<GestionFTTH.Web.Models.Proyecto>
+@using GestionFTTH.Web.Models
+
+@{
+    ViewData["Title"] = "Proyectos";
+
+    var total = Model.Count();
+    var pendientes = Model.Count(p => p.Estado == EstadoProyecto.Pendiente);
+    var ejecucion = Model.Count(p => p.Estado == EstadoProyecto.EnEjecucion);
+    var finalizados = Model.Count(p => p.Estado == EstadoProyecto.Finalizado);
+
+    var areaSeleccionada = (AreaProyecto?)ViewBag.AreaSeleccionada;
+
+    string tituloArea = areaSeleccionada switch
+    {
+        AreaProyecto.Prediseño => "Prediseño",
+        AreaProyecto.Diseño => "Diseño",
+        AreaProyecto.Construccion => "Construcción",
+        _ => "Todas las áreas"
+    };
+
+}
+
+<style>
+    .proyectos-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+        .proyectos-header h2 {
+            color: #0B3559;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .proyectos-header p {
+            color: #7185A0;
+            margin-bottom: 0;
+        }
+
+    .btn-nuevo {
+        background: linear-gradient(90deg, #0879CF, #0AA78A);
+        color: white;
+        padding: 12px 20px;
+        border-radius: 9px;
+        font-weight: 600;
+        text-decoration: none;
+    }
+
+        .btn-nuevo:hover {
+            color: white;
+            opacity: 0.9;
+        }
+
+    .resumen-card {
+        background: white;
+        border: 1px solid #E1EAF3;
+        border-radius: 14px;
+        padding: 22px;
+        height: 100%;
+    }
+
+        .resumen-card .etiqueta {
+            color: #7185A0;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .resumen-card .numero {
+            color: #0B3559;
+            font-size: 30px;
+            font-weight: 700;
+            margin-top: 8px;
+        }
+
+    .tabla-card {
+        background: white;
+        border: 1px solid #E1EAF3;
+        border-radius: 14px;
+        padding: 24px;
+        margin-top: 25px;
+        box-shadow: 0 5px 20px rgba(10, 49, 82, 0.04);
+    }
+
+    .tabla-titulo {
+        color: #0B3559;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    .tabla-proyectos thead th {
+        background: #F1F6FB;
+        color: #31516F;
+        font-size: 13px;
+        font-weight: 700;
+        padding: 15px;
+        border-bottom: none;
+        white-space: nowrap;
+    }
+
+    .tabla-proyectos tbody td {
+        padding: 15px;
+        color: #38536D;
+        vertical-align: middle;
+        border-bottom: 1px solid #E9EFF5;
+    }
+
+    .badge-estado {
+        display: inline-block;
+        border-radius: 20px;
+        padding: 6px 12px;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+    }
+
+    .estado-pendiente {
+        background: #FFF3D6;
+        color: #A66A00;
+    }
+
+    .estado-ejecucion {
+        background: #DDF0FF;
+        color: #0867A5;
+    }
+
+    .estado-finalizado {
+        background: #DDF7ED;
+        color: #087A55;
+    }
+
+    .sin-proyectos {
+        text-align: center;
+        padding: 45px 15px;
+        color: #7185A0;
+    }
+</style>
+
+<div class="proyectos-header">
+    <div>
+        <h2>Gestión de proyectos</h2>
+        <p>Consulta y administra los proyectos FTTH registrados.</p>
+    </div>
+
+    <a asp-controller="Proyectos"
+       asp-action="Create"
+       class="btn-nuevo">
+        + Nuevo proyecto
+    </a>
+</div>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show"
+         role="alert">
+        @TempData["Mensaje"]
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Cerrar">
+        </button>
+    </div>
+}
+
+<div class="row g-3">
+
+    <div class="col-md-3">
+        <div class="resumen-card">
+            <div class="etiqueta">Total de proyectos</div>
+            <div class="numero">@total</div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="resumen-card">
+            <div class="etiqueta">Pendientes</div>
+            <div class="numero">@pendientes</div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="resumen-card">
+            <div class="etiqueta">En ejecución</div>
+            <div class="numero">@ejecucion</div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="resumen-card">
+            <div class="etiqueta">Finalizados</div>
+            <div class="numero">@finalizados</div>
+        </div>
+    </div>
+
+</div>
+
+<div class="tabla-card">
+
+
+    <h5 class="tabla-titulo">
+        Listado de proyectos - @tituloArea
+    </h5>
+
+    @if (areaSeleccionada.HasValue)
+    {
+        <a asp-controller="Proyectos"
+           asp-action="Index"
+           class="btn btn-outline-primary btn-sm mb-3">
+            Ver todos los proyectos
+        </a>
+    }
+
+
+    <div class="table-responsive">
+
+        <table class="table tabla-proyectos">
+
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Nombre del proyecto</th>
+                    <th>Área</th>
+                    <th>Estado</th>
+                    <th>Fecha de inicio</th>
+                    <th>Fecha de entrega</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @if (Model.Any())
+                {
+                    @foreach (var proyecto in Model)
+                    {
+                        <tr>
+
+                            <td>
+                                <a asp-controller="Proyectos"
+                                   asp-action="Details"
+                                   asp-route-id="@proyecto.Id"
+                                   class="fw-bold text-decoration-none">
+                                    @proyecto.Codigo
+                                </a>
+                            </td>
+
+
+                            <td>@proyecto.Nombre</td>
+
+                            <td>
+                                @switch (proyecto.Area)
+                                {
+                                    case AreaProyecto.Prediseño:
+                                        <span>Prediseño</span>
+                                        break;
+
+                                    case AreaProyecto.Diseño:
+                                        <span>Diseño</span>
+                                        break;
+
+                                    case AreaProyecto.Construccion:
+                                        <span>Construcción</span>
+                                        break;
+                                }
+                            </td>
+
+                            <td>
+                                @switch (proyecto.Estado)
+                                {
+                                    case EstadoProyecto.Pendiente:
+                                        <span class="badge-estado estado-pendiente">
+                                            Pendiente
+                                        </span>
+                                        break;
+
+                                    case EstadoProyecto.EnEjecucion:
+                                        <span class="badge-estado estado-ejecucion">
+                                            En ejecución
+                                        </span>
+                                        break;
+
+                                    case EstadoProyecto.Finalizado:
+                                        <span class="badge-estado estado-finalizado">
+                                            Finalizado
+                                        </span>
+                                        break;
+                                }
+                            </td>
+
+                            <td>
+                                @(proyecto.FechaInicio?.ToString("dd/MM/yyyy") ?? "—")
+                            </td>
+
+                            <td>
+                                @(proyecto.FechaEntrega?.ToString("dd/MM/yyyy") ?? "—")
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6" class="sin-proyectos">
+                            Aún no existen proyectos registrados.
+                            <div class="mt-2">
+                                Presiona "Nuevo proyecto" para comenzar.
+                            </div>
+                        </td>
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>

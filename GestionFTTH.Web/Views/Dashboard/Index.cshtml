@@ -1,0 +1,134 @@
+﻿@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="ftth-dashboard">
+
+    <div class="d-flex justify-content-between align-items-center
+                flex-wrap gap-3 mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1" style="color:#12395e;">
+                Resumen general
+            </h2>
+            <p class="text-muted mb-0">
+                Monitoreo y control de proyectos FTTH
+            </p>
+        </div>
+
+
+        <a asp-controller="Proyectos"
+           asp-action="Create"
+           class="btn btn-primary px-4">
+            + Nuevo proyecto
+        </a>
+
+
+    </div>
+
+    <!-- INDICADORES GENERALES -->
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-lg-3 col-md-6">
+            <div class="ftth-stat-card">
+                <span>Total de proyectos</span>
+                <h2>@ViewBag.TotalProyectos</h2>
+                <small>Proyectos registrados</small>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="ftth-stat-card">
+                <span>En ejecución</span>
+                <h2>@ViewBag.EnEjecucion</h2>
+                <small>Proyectos activos</small>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="ftth-stat-card">
+                <span>Finalizados</span>
+                <h2>@ViewBag.Finalizados</h2>
+                <small>Proyectos completados</small>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6">
+            <div class="ftth-stat-card">
+                <span>Pendientes</span>
+                <h2>@ViewBag.Pendientes</h2>
+                <small>Por iniciar</small>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ÁREAS OPERATIVAS -->
+
+    <h4 class="fw-bold mb-3" style="color:#12395e;">
+        Proyectos por área
+    </h4>
+
+    <div class="row g-4">
+
+        <div class="col-lg-4">
+            <div class="ftth-area-card">
+                <div class="ftth-area-icon prediseño">
+                    P
+                </div>
+                <h4>Prediseño</h4>
+                <p>Planificación y evaluación inicial.</p>
+                <span>@ViewBag.TotalPrediseno proyectos registrados</span>
+
+                <a asp-controller="Proyectos"
+                   asp-action="Index"
+                   asp-route-area="1"
+                   class="btn btn-info mt-3">
+                    Ver proyectos
+                </a>
+
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="ftth-area-card">
+                <div class="ftth-area-icon diseño">
+                    D
+                </div>
+                <h4>Diseño</h4>
+                <p>Ingeniería y desarrollo técnico.</p>
+                <span>@ViewBag.TotalDiseno proyectos registrados</span>
+
+                <a asp-controller="Proyectos"
+                   asp-action="Index"
+                   asp-route-area="2"
+                   class="btn btn-primary mt-3">
+                    Ver proyectos
+                </a>
+
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="ftth-area-card">
+                <div class="ftth-area-icon construccion">
+                    C
+                </div>
+                <h4>Construcción</h4>
+                <p>Ejecución y seguimiento de obras.</p>
+                <span>@ViewBag.TotalConstruccion proyectos registrados</span>
+
+                <a asp-controller="Proyectos"
+                   asp-action="Index"
+                   asp-route-area="3"
+                   class="btn btn-success mt-3">
+                    Ver proyectos
+                </a>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>

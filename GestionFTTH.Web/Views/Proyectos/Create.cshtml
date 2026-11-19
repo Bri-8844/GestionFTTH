@@ -1,0 +1,146 @@
+﻿@model GestionFTTH.Web.Models.Proyecto
+@using GestionFTTH.Web.Models
+
+@{
+    ViewData["Title"] = "Nuevo proyecto";
+}
+
+<div class="container-fluid">
+
+    <div class="mb-4">
+        <h2 class="fw-bold" style="color:#12395e;">
+            Registrar nuevo proyecto
+        </h2>
+        <p class="text-muted">
+            Complete la información para registrar
+            un proyecto en GestiónFTTH.
+        </p>
+    </div>
+
+    <div class="card border-0 shadow-sm"
+         style="border-radius:16px;">
+
+        <div class="card-body p-4">
+
+            <form asp-controller="Proyectos"
+                  asp-action="Create"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <div class="row g-4">
+
+                    <div class="col-md-4">
+                        <label asp-for="Codigo"
+                               class="form-label fw-semibold">
+                        </label>
+                        <input asp-for="Codigo"
+                               class="form-control"
+                               placeholder="FTTH-2026-001" />
+                        <span asp-validation-for="Codigo"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-8">
+                        <label asp-for="Nombre"
+                               class="form-label fw-semibold">
+                        </label>
+                        <input asp-for="Nombre"
+                               class="form-control"
+                               placeholder="Nombre del proyecto" />
+                        <span asp-validation-for="Nombre"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Area"
+                               class="form-label fw-semibold">
+                        </label>
+                        <select asp-for="Area"
+                                asp-items="Html.GetEnumSelectList<AreaProyecto>()"
+                                class="form-select">
+                            <option value="">
+                                Seleccione un área
+                            </option>
+                        </select>
+                        <span asp-validation-for="Area"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Estado"
+                               class="form-label fw-semibold">
+                        </label>
+                        <select asp-for="Estado"
+                                asp-items="Html.GetEnumSelectList<EstadoProyecto>()"
+                                class="form-select">
+                        </select>
+                        <span asp-validation-for="Estado"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="FechaInicio"
+                               class="form-label fw-semibold">
+                        </label>
+                        <input asp-for="FechaInicio"
+                               type="date"
+                               class="form-control" />
+                        <span asp-validation-for="FechaInicio"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="FechaEntrega"
+                               class="form-label fw-semibold">
+                        </label>
+                        <input asp-for="FechaEntrega"
+                               type="date"
+                               class="form-control" />
+                        <span asp-validation-for="FechaEntrega"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12">
+                        <label asp-for="Descripcion"
+                               class="form-label fw-semibold">
+                        </label>
+                        <textarea asp-for="Descripcion"
+                                  class="form-control"
+                                  rows="4"
+                                  placeholder="Descripción del proyecto">
+                        </textarea>
+                        <span asp-validation-for="Descripcion"
+                              class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <hr class="my-4" />
+
+                <div class="d-flex justify-content-end gap-2">
+                    <a asp-controller="Dashboard"
+                       asp-action="Index"
+                       class="btn btn-outline-secondary px-4">
+                        Cancelar
+                    </a>
+
+                    <button type="submit"
+                            class="btn btn-primary px-4">
+                        Guardar proyecto
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,126 @@
+﻿@model IEnumerable<GestionFTTH.Web.Data.ApplicationUser>
+@using GestionFTTH.Web.Models
+@using System.Linq
+
+@{
+    ViewData["Title"] = "Gestión de Usuarios";
+
+    var trabajadores = ViewBag.Trabajadores as List<Trabajador>
+        ?? new List<Trabajador>();
+
+    var rolesUsuarios =
+        ViewBag.RolesUsuarios as Dictionary<string, string>
+        ?? new Dictionary<string, string>();
+
+}
+
+@if (TempData["MensajeExito"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["MensajeExito"]
+    </div>
+}
+
+
+<div class="container-fluid">
+
+    <div class="d-flex justify-content-between
+                align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold" style="color:#12395e;">
+                Gestión de Usuarios
+            </h2>
+
+            <p class="text-muted">
+                Administración de cuentas de acceso
+            </p>
+        </div>
+
+
+        <a asp-controller="Usuarios"
+           asp-action="Create"
+           class="btn btn-primary">
+            + Nuevo usuario
+        </a>
+
+
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+
+                    <thead class="table-light">
+                        <tr>
+
+                            <th>Usuario</th>
+                            <th>Correo electrónico</th>
+                            <th>Rol</th>
+                            <th>Trabajador vinculado</th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var usuario in Model)
+                        {
+                            var trabajador = trabajadores
+                            .FirstOrDefault(t =>
+                            t.Id == usuario.TrabajadorId);
+
+                            <tr>
+                                <td>@usuario.UserName</td>
+
+                                <td>@usuario.Email</td>
+
+                                <td>
+                                    @{
+                                        var rolUsuario = rolesUsuarios.ContainsKey(usuario.Id)
+                                        ? rolesUsuarios[usuario.Id]
+                                        : "Sin rol";
+                                    }
+
+                                    <span class="badge bg-secondary">
+                                        @rolUsuario
+                                    </span>
+                                </td>
+
+
+                                <td>
+                                    @if (trabajador != null)
+                                    {
+                                        @trabajador.Nombres
+                                        @(" ")
+                                        @trabajador.Apellidos
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">
+                                            Sin trabajador vinculado
+                                        </span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+
+                        @if (!Model.Any())
+                        {
+                            <tr>
+                                <td colspan="4"
+                                    class="text-center text-muted py-4">
+                                    No existen usuarios registrados.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>

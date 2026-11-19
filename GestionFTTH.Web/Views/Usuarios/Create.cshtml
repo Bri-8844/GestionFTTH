@@ -1,0 +1,195 @@
+﻿@model GestionFTTH.Web.Models.CrearUsuarioViewModel
+@using GestionFTTH.Web.Models
+
+@{
+    ViewData["Title"] = "Nuevo usuario";
+
+    var trabajadores = ViewBag.Trabajadores as List<Trabajador>
+        ?? new List<Trabajador>();
+}
+
+<div class="container-fluid">
+
+    <div class="mb-4">
+        <h2 class="fw-bold" style="color:#12395e;">
+            Nuevo usuario
+        </h2>
+
+        <p class="text-muted">
+            Registro de cuentas de acceso a GestiónFTTH
+        </p>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-4">
+
+            <form asp-controller="Usuarios"
+                  asp-action="Create"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <div class="row g-3">
+
+                    <!-- Correo electrónico -->
+                    <div class="col-md-12">
+                        <label asp-for="Email"
+                               class="form-label fw-semibold">
+                        </label>
+
+                        <input asp-for="Email"
+                               class="form-control"
+                               placeholder="ejemplo@correo.com" />
+
+                        <span asp-validation-for="Email"
+                              class="text-danger"></span>
+                    </div>
+
+                    <!-- Contraseña -->
+                    <div class="col-md-6">
+                        <label asp-for="Password"
+                               class="form-label fw-semibold">
+                        </label>
+
+                        <input asp-for="Password"
+                               class="form-control" />
+
+                        <span asp-validation-for="Password"
+                              class="text-danger"></span>
+                    </div>
+
+                    <!-- Confirmar contraseña -->
+                    <div class="col-md-6">
+                        <label asp-for="ConfirmPassword"
+                               class="form-label fw-semibold">
+                        </label>
+
+                        <input asp-for="ConfirmPassword"
+                               class="form-control" />
+
+                        <span asp-validation-for="ConfirmPassword"
+                              class="text-danger"></span>
+                    </div>
+
+                    <!-- Rol -->
+                    <div class="col-md-6">
+                        <label asp-for="Rol"
+                               class="form-label fw-semibold">
+                        </label>
+
+                        <select asp-for="Rol"
+                                id="Rol"
+                                class="form-select">
+                            <option value="">
+                                -- Seleccione un rol --
+                            </option>
+
+                            <option value="AdministradorPrincipal">
+                                Administrador Principal
+                            </option>
+
+                            <option value="AdministradorGerencia">
+                                Gerente de Operaciones
+                            </option>
+
+                            <option value="JefeArea">
+                                Jefe de Área
+                            </option>
+
+                            <option value="Trabajador">
+                                Trabajador
+                            </option>
+                        </select>
+
+                        <span asp-validation-for="Rol"
+                              class="text-danger"></span>
+                    </div>
+
+                    <!-- Trabajador vinculado -->
+                    <div class="col-md-6" id="grupoTrabajador">
+                        <label asp-for="TrabajadorId"
+                               class="form-label fw-semibold">
+                        </label>
+
+                        <select asp-for="TrabajadorId"
+                                class="form-select">
+
+                            <option value="">
+                                -- Seleccione un trabajador --
+                            </option>
+
+                            @foreach (var trabajador in trabajadores)
+                            {
+                                <option value="@trabajador.Id">
+                                    @trabajador.Codigo -
+                                    @trabajador.Nombres
+                                    @trabajador.Apellidos
+                                </option>
+                            }
+
+                        </select>
+
+                        <span asp-validation-for="TrabajadorId"
+                              class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <hr class="my-4" />
+
+                <div class="d-flex justify-content-end gap-2">
+
+                    <a asp-controller="Usuarios"
+                       asp-action="Index"
+                       class="btn btn-outline-secondary">
+                        Cancelar
+                    </a>
+
+
+                    <button type="submit"
+                            class="btn btn-primary">
+                        Guardar usuario
+                    </button>
+
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        const rol = document.getElementById("Rol");
+        const grupoTrabajador =
+            document.getElementById("grupoTrabajador");
+
+        const trabajador =
+            document.getElementById("TrabajadorId");
+
+        function actualizarTrabajador() {
+            if (rol.value === "Trabajador" ||
+                rol.value === "JefeArea") {
+
+                grupoTrabajador.style.display = "block";
+
+            } else {
+                grupoTrabajador.style.display = "none";
+                trabajador.value = "";
+            }
+        }
+
+        rol.addEventListener("change", actualizarTrabajador);
+
+        actualizarTrabajador();
+    </script>
+}

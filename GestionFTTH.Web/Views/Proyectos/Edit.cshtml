@@ -1,0 +1,214 @@
+﻿@model GestionFTTH.Web.Models.Proyecto
+@using GestionFTTH.Web.Models
+
+@{
+    ViewData["Title"] = "Editar proyecto";
+}
+
+<style>
+    .editar-header {
+        margin-bottom: 25px;
+    }
+
+        .editar-header h2 {
+            color: #12395e;
+            font-weight: 700;
+        }
+
+    .editar-card {
+        background: white;
+        border: 1px solid #e1eaf3;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 5px 20px rgba(10,49,82,0.05);
+    }
+
+    .editar-seccion {
+        color: #12395e;
+        font-size: 17px;
+        font-weight: 700;
+        border-bottom: 1px solid #e5edf5;
+        padding-bottom: 12px;
+        margin-bottom: 22px;
+    }
+
+    .editar-card .form-label {
+        color: #234563;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .editar-card .form-control,
+    .editar-card .form-select {
+        border-radius: 9px;
+        border: 1px solid #cbd9e7;
+        padding: 11px 13px;
+    }
+
+        .editar-card .form-control:focus,
+        .editar-card .form-select:focus {
+            border-color: #168acb;
+            box-shadow: 0 0 0 3px rgba(22,138,203,0.12);
+        }
+
+    .btn-actualizar {
+        background: linear-gradient(90deg, #0879cf, #0aa78a);
+        color: white;
+        border: none;
+        border-radius: 9px;
+        padding: 12px 25px;
+        font-weight: 600;
+    }
+
+        .btn-actualizar:hover {
+            color: white;
+            opacity: 0.9;
+        }
+
+    .btn-cancelar-edicion {
+        background: #edf2f7;
+        color: #31516f;
+        border-radius: 9px;
+        padding: 12px 25px;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+        .btn-cancelar-edicion:hover {
+            background: #dfe8f1;
+            color: #12395e;
+        }
+</style>
+
+<div class="editar-header">
+    <h2>Editar proyecto</h2>
+    <p class="text-muted">
+        Actualice la información del proyecto FTTH.
+    </p>
+</div>
+
+<div class="editar-card">
+
+    <form asp-controller="Proyectos"
+          asp-action="Edit"
+          asp-route-id="@Model.Id"
+          method="post">
+
+        <input type="hidden" asp-for="Id" />
+
+        <div asp-validation-summary="ModelOnly"
+             class="text-danger mb-3"></div>
+
+        <h5 class="editar-seccion">
+            Información general
+        </h5>
+
+        <div class="row g-3">
+
+            <div class="col-md-4">
+                <label asp-for="Codigo" class="form-label"></label>
+                <input asp-for="Codigo"
+                       class="form-control" />
+                <span asp-validation-for="Codigo"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="col-md-8">
+                <label asp-for="Nombre" class="form-label"></label>
+                <input asp-for="Nombre"
+                       class="form-control" />
+                <span asp-validation-for="Nombre"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="col-md-12">
+                <label asp-for="Descripcion" class="form-label"></label>
+                <textarea asp-for="Descripcion"
+                          class="form-control"
+                          rows="4"></textarea>
+                <span asp-validation-for="Descripcion"
+                      class="text-danger"></span>
+            </div>
+
+        </div>
+
+        <h5 class="editar-seccion mt-4">
+            Clasificación del proyecto
+        </h5>
+
+        <div class="row g-3">
+
+            <div class="col-md-6">
+                <label asp-for="Area" class="form-label"></label>
+                <select asp-for="Area"
+                        asp-items="Html.GetEnumSelectList<AreaProyecto>()"
+                        class="form-select">
+                    <option value="">Seleccione un área</option>
+                </select>
+                <span asp-validation-for="Area"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="Estado" class="form-label"></label>
+                <select asp-for="Estado" class="form-select">
+                    <option value="1">Pendiente</option>
+                    <option value="2">En ejecución</option>
+                    <option value="3">Finalizado</option>
+                </select>
+                <span asp-validation-for="Estado"
+                      class="text-danger"></span>
+            </div>
+
+        </div>
+
+        <h5 class="editar-seccion mt-4">
+            Cronograma del proyecto
+        </h5>
+
+        <div class="row g-3">
+
+            <div class="col-md-6">
+                <label asp-for="FechaInicio" class="form-label"></label>
+                <input asp-for="FechaInicio"
+                       type="date"
+                       class="form-control" />
+                <span asp-validation-for="FechaInicio"
+                      class="text-danger"></span>
+            </div>
+
+            <div class="col-md-6">
+                <label asp-for="FechaEntrega" class="form-label"></label>
+                <input asp-for="FechaEntrega"
+                       type="date"
+                       class="form-control" />
+                <span asp-validation-for="FechaEntrega"
+                      class="text-danger"></span>
+            </div>
+
+        </div>
+
+        <hr class="my-4" />
+
+        <div class="d-flex justify-content-end gap-3">
+
+            <a asp-controller="Proyectos"
+               asp-action="Details"
+               asp-route-id="@Model.Id"
+               class="btn-cancelar-edicion">
+                Cancelar
+            </a>
+
+            <button type="submit" class="btn-actualizar">
+                Guardar cambios
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
